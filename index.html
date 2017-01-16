@@ -1,1 +1,235 @@
-Hello World
+<!DOCTYPE HTML>
+<!--
+	Aerial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Juan Carlos Arteaga</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body class="loading">
+		<div id="wrapper">
+			<div id="bg" style="background-color:#FFFFFF"></div>
+			<div id="overlay"></div>
+			<div id="main" style="">
+
+				<!-- Header -->
+					<header id="header">
+						<nav>
+							<ul>
+								<li>
+										<img src="assets/2j5sVokJ_lo.jpg"
+										style="border-radius:50%; margin-left:-54px" />
+								</li>
+							</ul>
+						</nav>
+
+						<h1>Juan Carlos Arteaga</h1>
+						<p>
+							Software Developer
+							&nbsp;&bull;&nbsp; Cyborg
+							&nbsp;&bull;&nbsp; Dank Memelord
+						</p>
+						<nav>
+							<ul>
+								<li>
+									<a
+										href="https://www.twitter.com/juancarlos2992"
+										class="icon fa-twitter">
+										<span class="label">Twitter</span>
+									</a>
+								</li>
+								<li>
+									<a
+										href="https://www.github.com/juancarlos2992"
+										class="icon fa-github">
+										<span class="label">Github</span>
+									</a>
+								</li>
+								<li>
+									<a
+										href="mailto:jc@jcaa.me"
+										class="icon fa-envelope-o">
+										<span class="label">Email</span>
+									</a>
+								</li>
+								<li>
+									<a
+										href="https://www.linkedin.com/in/juancarlos2992"
+										class="icon fa-linkedin">
+										<span class="label">Email</span>
+									</a>
+								</li>
+								<li>
+									<a
+										href="https://www.facebook.com/juancarlos2992"
+										class="icon fa-facebook">
+										<span class="label">Facebook</span>
+									</a>
+								</li>
+								<li>
+									<a
+										href="https://www.facebook.com/juancarlos2992"
+										class="icon fa-download">
+										<span class="label">Facebook</span>
+									</a>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<span class="copyright">
+							&copy; 2016 Juan Carlos Arteaga.
+							Design: <a href="http://html5up.net">HTML5 UP</a>.
+						</span>
+					</footer>
+
+			</div>
+		</div>
+		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+		<script>
+			window.onload = function() { document.body.className = ''; }
+			window.ontouchmove = function() { return false; }
+			window.onorientationchange = function() { document.body.scrollTop = 0; }
+		</script>
+
+		<script src="js/three.min.js"></script>
+
+		<script src="js/renderers/Projector.js"></script>
+		<script src="js/renderers/CanvasRenderer.js"></script>
+
+		<script>
+			var camera;
+			var scene;
+			var renderer;
+
+			var mouseX = 0;
+			var mouseY = 0;
+
+			var line_color = 0x4286f4;
+			var particle_color = 0x4286f4;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			init();
+			animate();
+
+			function init() {
+
+				var particle;
+				var container = document.getElementById("bg");
+
+				camera = new THREE.PerspectiveCamera(
+					75,
+					window.innerWidth / window.innerHeight,
+					1,
+					10000 );
+
+				camera.position.z = 100;
+
+				scene = new THREE.Scene();
+
+				renderer = new THREE.CanvasRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				// particles
+				var PI2 = Math.PI * 2;
+				var material = new THREE.SpriteCanvasMaterial({
+					color: particle_color,
+					program: function ( context ) {
+						context.beginPath();
+						context.arc( 0, 0, 0.2, 0, PI2, true );
+						context.fill();
+					}
+				});
+
+				var geometry = new THREE.Geometry();
+
+				for ( var i = 0; i < 100; i ++ ) {
+					particle = new THREE.Sprite( material );
+					particle.position.x = Math.random() * 2 - 1;
+					particle.position.y = Math.random() * 2 - 1;
+					particle.position.z = Math.random() * 2 - 1;
+					particle.position.normalize();
+					particle.position.multiplyScalar( Math.random() * 10 + 450 );
+					particle.scale.x = particle.scale.y = 10;
+					scene.add( particle );
+
+					geometry.vertices.push( particle.position );
+				}
+
+				// lines
+				var line = new THREE.Line(
+					geometry,
+					new THREE.LineBasicMaterial( { color: line_color, opacity: 0.5 } )
+				);
+				scene.add( line );
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function onWindowResize() {
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+			function onDocumentMouseMove(event) {
+				mouseX = event.clientX - windowHalfX;
+				mouseY = event.clientY - windowHalfY;
+			}
+
+			function onDocumentTouchStart( event ) {
+
+				if ( event.touches.length > 1 ) {
+					event.preventDefault();
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+				}
+			}
+
+			function onDocumentTouchMove( event ) {
+				if ( event.touches.length == 1 ) {
+					event.preventDefault();
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+				}
+			}
+
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+			}
+
+			function render() {
+				camera.position.x += ( mouseX - camera.position.x ) * .05;
+				camera.position.y += ( - mouseY + 200 - camera.position.y ) * .05;
+				camera.lookAt( scene.position );
+
+				renderer.render( scene, camera );
+			}
+
+		</script>
+	</body>
+</html>
