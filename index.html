@@ -8,7 +8,7 @@
 	<head>
 		<!-- HTTPS Redirect -->
 		<script type="text/javascript">
-		    var host = "jcaa.me";
+		    const host = "jcaa.me";
 		    if ((host == window.location.host) && (window.location.protocol != "https:"))
 		        window.location.protocol = "https";
 		</script>
@@ -101,7 +101,7 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<span class="copyright">
-							2019 - Juan Carlos Arteaga.
+							2020 - Juan Carlos Arteaga.
 							Design: <a href="http://html5up.net">HTML5 UP</a>.
 						</span>
 					</footer>
@@ -121,26 +121,26 @@
 		<script src="js/renderers/CanvasRenderer.js"></script>
 
 		<script>
-			var camera;
-			var scene;
-			var renderer;
+			let camera;
+			let scene;
+			let renderer;
 
-			var mouseX = 0;
-			var mouseY = 0;
+			let mouseX = 0;
+			let mouseY = 0;
 
-			var line_color = 0x999999;
-			var particle_color = 0x999999;
+			const line_color = 0x999999;
+			const particle_color = 0x999999;
 
-			var windowHalfX = window.innerWidth / 2;
-			var windowHalfY = window.innerHeight / 2;
+			let windowHalfX = window.innerWidth / 2;
+			let windowHalfY = window.innerHeight / 2;
 
 			init();
 			animate();
 
 			function init() {
 
-				var particle;
-				var container = document.getElementById("bg");
+				let particle;
+				let container = document.getElementById("bg");
 
 				camera = new THREE.PerspectiveCamera(
 					75,
@@ -158,8 +158,8 @@
 				container.appendChild( renderer.domElement );
 
 				// particles
-				var PI2 = Math.PI * 2;
-				var material = new THREE.SpriteCanvasMaterial({
+				const PI2 = Math.PI * 2;
+				let material = new THREE.SpriteCanvasMaterial({
 					color: particle_color,
 					program: function ( context ) {
 						context.beginPath();
@@ -168,9 +168,9 @@
 					}
 				});
 
-				var geometry = new THREE.Geometry();
+				let geometry = new THREE.Geometry();
 
-				for ( var i = 0; i < 100; i ++ ) {
+				for ( let i = 0; i < 100; i ++ ) {
 					particle = new THREE.Sprite( material );
 					particle.position.x = Math.random() * 2 - 1;
 					particle.position.y = Math.random() * 2 - 1;
@@ -184,7 +184,7 @@
 				}
 
 				// lines
-				var line = new THREE.Line(
+				let line = new THREE.Line(
 					geometry,
 					new THREE.LineBasicMaterial( { color: line_color, opacity: 0.5 } )
 				);
